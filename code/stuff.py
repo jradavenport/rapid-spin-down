@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def Barnes2003_I(BV,t):
     '''
     interface gyrochrone
@@ -66,3 +67,35 @@ def OmC(BV,time, T=10, f=1):
     OC = OC * 24*60 # in min
     return OC
 
+def twogaus(x, a1, x01, sigma1, a2, x02, sigma2, c):
+    model = (a1 * np.exp(-(x - x01)**2 / (2 * sigma1**2)) + 
+             a2 * np.exp(-(x - x02)**2 / (2 * sigma2**2)) + 
+             a1 * np.exp(-(x - x01 - 1)**2 / (2 * sigma1**2)) + 
+             a2 * np.exp(-(x - x02 - 1)**2 / (2 * sigma2**2)) +
+             a1 * np.exp(-(x - x01 + 1)**2 / (2 * sigma1**2)) + 
+             a2 * np.exp(-(x - x02 + 1)**2 / (2 * sigma2**2)) + c)
+    return model 
+
+
+def gaus(x, a, x0, sigma, b):
+    """
+    Simple Gaussian function
+    
+    Parameters
+    ----------
+    x : float or 1-d numpy array
+        The data to evaluate the Gaussian over
+    a : float
+        the amplitude
+    b : float
+        the constant offset
+    x0 : float
+        the center of the Gaussian
+    sigma : float
+        the width of the Gaussian
+
+    Returns
+    -------
+    Array or float of same type as input (x).
+    """
+    return a * np.exp(-(x - x0)**2 / (2 * sigma**2)) + b
